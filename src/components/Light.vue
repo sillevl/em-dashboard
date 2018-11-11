@@ -13,8 +13,19 @@
 export default {
   data () {
     return {
-      name: 'light',
       state: false
+    }
+  },
+  props: {
+    name: {
+      default: 'Light',
+      type: String
+    },
+    stateTopic: {
+      type: String
+    },
+    commandTopic: {
+      type: String
     }
   },
   methods: {
@@ -25,6 +36,29 @@ export default {
   computed: {
     lightClass: function () {
       return this.state ? 'yellow-text accent-4' : 'grey-text'
+    },
+    stateString: function () {
+      return this.state ? 'on' : 'off'
+    }
+  },
+  watch: {
+    state: function (newValue, oldValue) {
+      console.log(newValue)
+      this.$mqtt.publish(this.commandTopic, this.stateString)
+    }
+  },
+  mounted () {
+    if (this.stateTopic) {
+      this.$mqtt.subscribe(this.stateTopic)
+    }
+  },
+  mqtt: {
+    '#': function mqttResponse (data, topic) {
+      if (topic === this.stateTopic) {
+        const value = new TextDecoder('utf-8').decode(data)
+        console.log(topic, value)
+        this.state = (value.toString().toLowerCase() === 'on')
+      }
     }
   }
 }
