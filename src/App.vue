@@ -23,11 +23,12 @@
 
 <script>
 import Light from './components/Light.vue'
+import Relay from './components/Relay.vue'
 
 export default {
   name: 'app',
   components: {
-    Light
+    Light, Relay
   },
   data: function () {
     return {
@@ -40,7 +41,7 @@ export default {
         },
         {
           name: 'test1',
-          type: 'light',
+          type: 'relay',
           stateTopic: 'teletask/relay/47',
           commandTopic: 'teletask/relay/47/set'
         },
