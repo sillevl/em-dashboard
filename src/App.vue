@@ -1,28 +1,50 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo center">Dashboard</a>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col s6 m4 l3" v-for="sensor in sensors" v-bind:key="sensor.name">
+          <component v-bind:is="sensor.type"></component>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Light from './components/Light.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Light
+  },
+  data: function () {
+    return {
+      sensors: [
+        {
+          name: 'test',
+          type: 'light',
+          stateTopic: 'teletask/relay/46',
+          commandTopic: 'teletask/relay/46/set'
+        },
+        {
+          name: 'test1',
+          type: 'light'
+        },
+        {
+          name: 'test2',
+          type: 'light'
+        }
+      ]
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
